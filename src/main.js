@@ -14,7 +14,7 @@
 
 
 window.onload = function () {
-    console.log("It's loaded!")
+    console.log("The new stuff. It's loaded!")
 };
 
 window.clearTimeout = window.clearTimeout.bind(window);
