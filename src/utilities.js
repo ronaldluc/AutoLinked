@@ -84,7 +84,7 @@ function getTodayDate() {
 
 function createButton(btnText, elementId, listener, offset=0) {
     let div = document.createElement('div');
-    div.innerHTML = '<a id="connectBtn">' + btnText + '</a>';
+    div.innerHTML = '<a id="' + elementId + '">' + btnText + '</a>';
 
     div.style.display = "inline-block";
     div.style.position = "fixed";
