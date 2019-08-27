@@ -21,32 +21,6 @@ window.setInterval = window.setInterval.bind(window);
 
 console.log("Base script loaded");
 
-function clickThroughProfiles() {
-
-
-    var button_cls = "message-anywhere-button artdeco-button artdeco-button--secondary";
-    if (document.getElementsByClassName(button_cls).length > 10) {
-        var x = document.getElementsByClassName(button_cls);
-        for (let i = 0; i < 10; i++) {
-            x[i].click();
-            var close_cls = "msg-overlay-bubble-header__control js-msg-close artdeco-button artdeco-button--circle artdeco-button--inverse artdeco-button--1 artdeco-button--tertiary ember-view";
-            var close_btn = document.getElementsByClassName(close_cls);
-            for (let j = 0; j < close_btn.length; j++) {
-                setTimeout(function () {
-                    close_btn[j].click()
-                }, 2000);
-            }
-            // var companies = document.getElementsByClassName("pv-entity__secondary-title")
-        }
-    } else {
-        x = document.getElementsByClassName(button_cls);
-        for (let i = 0; i < x.length; i++) {
-            x[i].click();
-        }
-    }
-}
-
-
 /**
  * Initialize day cycle.
  *
@@ -60,7 +34,7 @@ function dayCycle(settings) {
     console.log(settings);
     initDay(settings);
 
-    GM_setValue('conn_spree', GM_getValue('conn_today'));
+    GM_setValue('conn_spree_start', GM_getValue('conn_today'));
     GM_setValue('conn_spree_max', getRandomInt(settings['lim_per_spree']));
     connectSpree(settings);
 
@@ -80,8 +54,9 @@ function connectSpree(settings) {
     console.log('ConnectSpree');
     connectToMatch(settings);
 
-    if (GM_getValue('conn_today', 0) - GM_getValue('conn_spree_start', 0) < GM_getValue('conn_spree_max')
-        && !isAlert()) {
+    let thisSpree = (GM_getValue('conn_today', 0) - GM_getValue('conn_spree_start', 0));
+    console.log(thisSpree);
+    if (thisSpree < GM_getValue('conn_spree_max') && !isAlert()) {
         setTimeout(() => {connectSpree(settings)}, getRandomInt(settings['click_delay']));
     }
 }
@@ -403,6 +378,32 @@ function goBack(skip) {
     }, 3000);
 }
 
-/////////////////////////////capitalize("bleh");///////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END CLICK ON PROFILE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function clickThroughProfiles() {
+
+
+    var button_cls = "message-anywhere-button artdeco-button artdeco-button--secondary";
+    if (document.getElementsByClassName(button_cls).length > 10) {
+        var x = document.getElementsByClassName(button_cls);
+        for (let i = 0; i < 10; i++) {
+            x[i].click();
+            var close_cls = "msg-overlay-bubble-header__control js-msg-close artdeco-button artdeco-button--circle artdeco-button--inverse artdeco-button--1 artdeco-button--tertiary ember-view";
+            var close_btn = document.getElementsByClassName(close_cls);
+            for (let j = 0; j < close_btn.length; j++) {
+                setTimeout(function () {
+                    close_btn[j].click()
+                }, 2000);
+            }
+            // var companies = document.getElementsByClassName("pv-entity__secondary-title")
+        }
+    } else {
+        x = document.getElementsByClassName(button_cls);
+        for (let i = 0; i < x.length; i++) {
+            x[i].click();
+        }
+    }
+}
