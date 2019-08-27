@@ -301,7 +301,7 @@ function isAlert() {
  * @param settings      Includes all settings
  */
 function dayCycle(settings) {
-    initDay();
+    initDay(settings);
 
     GM_setValue('conn_spree_max', getRandomInt(settings['lim_per_spree']));
     connectSpree(settings);
