@@ -88,7 +88,26 @@ function clicked() {
             clickThroughProfiles();
         } else {
             // setTimeout(connectFilteredProfiles, 42 * 60 * 1000);
-            connectFilteredProfiles();
+            // connectFilteredProfiles();
+            const settings = {
+                'click_delay': [2001, 5003],
+                'lim_per_spree': [30, 36],
+                'spree_delay': [60 * 60 * 1000, 2 * 60 * 60 * 1000],
+                'lim_per_day': [250, 300],
+                'includes_patts': {
+                    // "perspective": "python|C\\+\\+",
+                    "colleagues": "R&D|deep|machine learning| ML | NLP | CV |artificial| AI |data scientist|speech recog|computer vision|language processing", // innovat| BI |intelligence|data
+                    // "research": "scientist|space", // science|professor|research
+                    // "executive": "founder| C.{1,2}O |lead|owner|principal|partner|investor|angel|entrepreneur", // head of
+                    "ml_leaders": "at google|nvidia|deepmind|openai",
+                },
+                'exclude_patts': {
+                    "technologies": "electro|web|mobile|java|script|PHP|frontend|front-end|design| QA | UI | UX ",
+                    "HR": "headhunt|talent|trainer|sourcing|people| HR |recruit",
+                    "other": "ARTIN",
+                }
+            };
+            dayCycle(settings);
         }
     } else if (url[1] === 'search' && url[2] === 'results') {
         iterJobs();

@@ -251,6 +251,8 @@ function clickThroughProfiles() {
 
 function initDay(settings) {
     if (GM_getValue('day', new Date("01/01/2000")).getTime() !== getTodayDate().getTime()) {
+        console.log('Initialized the day');
+
         GM_setValue('conn_day', 0);
         GM_setValue('conn_day_max', getRandomInt(settings['lim_per_day']));
         GM_setValue('conn_spree', 0);
