@@ -27,41 +27,12 @@ function main() {
     }
 }
 
-function createButton(btnText, elementId, listener, offset=0) {
-    console.log('Creating a button');
-    console.log(btnText, elementId, listener, offset);
-    let div = document.createElement('div');
-    div.innerHTML = '<a id="' + elementId + '">' + btnText + '</a>';
-
-    div.style.display = "inline-block";
-    div.style.position = "fixed";
-    div.style.right = (3 + offset).toString() + "em";
-    div.style.top = "5em";
-    div.style.zIndex = '995';
-    div.style.cursor = 'pointer';
-
-    document.body.append(div);
-
-    let btn = document.getElementById(elementId);
-
-    btn.style.background = 'white';
-    btn.style.color = 'blue';
-    btn.style.fontWeight = '800';
-    btn.style.padding = '5px';
-    btn.style.border = 'solid 2px black';
-    btn.style.borderRadius = '7px';
-    btn.style.textDecoration = 'none';
-    btn.style.fontSize = '0.8em';
-
-    document.getElementById(elementId).addEventListener('click', listener, false);
-}
-
 function createConnectBtn() {
     createButton('Connect!', 'connectBtn', connect);
 }
 
 function createExportBtn() {
-    createButton('Export!', 'exportBtn', exportInvited, 10);
+    createButton('Export!', 'exportBtn', exportInvited, 6);
 }
 
 function createPopup() {
@@ -100,8 +71,10 @@ function connect() {
             // connectFilteredProfiles();
             const settings = {
                 'click_delay': [2001, 5003],
-                'lim_per_spree': [30, 36],
-                'spree_delay': [60 * 60 * 1000, 2 * 60 * 60 * 1000],
+                // 'lim_per_spree': [30, 36],
+                'lim_per_spree': [2, 3],
+                // 'spree_delay': [60 * 60 * 1000, 2 * 60 * 60 * 1000],
+                'spree_delay': [60 * 1000, 2 * 60 * 1000],
                 'lim_per_day': [250, 300],
                 'includes_patts': {
                     // "perspective": "python|C\\+\\+",

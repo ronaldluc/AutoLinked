@@ -329,7 +329,6 @@ function isAlert() {
  */
 function dayCycle(settings) {
     console.log('DayCycle');
-    console.log(settings);
     initDay(settings);
 
     GM_setValue('conn_spree', 0);
@@ -338,6 +337,8 @@ function dayCycle(settings) {
 
     if (GM_getValue('conn_today', 0) < GM_getValue('conn_max', 9999)) {
         setTimeout(() => {dayCycle(settings)}, getRandomInt(settings['spree_delay']));
+    } else {
+        saveDay(settings);
     }
 }
 
@@ -352,8 +353,6 @@ function connectSpree(settings) {
 
     if (GM_getValue('conn_spree', 0) < GM_getValue('conn_spree_max') && !isAlert()) {
         setTimeout(() => {connectSpree(settings)}, getRandomInt(settings['click_delay']));
-    } else {
-        saveDay(settings);
     }
 }
 
@@ -388,8 +387,6 @@ function connectToMatch(settings) {
 
         }
 
-        console.log(str);
-
         const include = str.match(include_patt);
         const exclude = str.match(exclude_patt);
 
@@ -411,118 +408,118 @@ function connectToMatch(settings) {
     GM_setValue('conn_spree', conn_spree);
 }
 
-function connectFilteredProfiles(texts = [], res = {"connect": 0, "cancel": 0,}, settings = {
-    'click_delay': [2001, 5003],
-    'lim_per_spree': [30, 36],
-    'spree_delay': [60 * 60 * 1000, 2 * 60 * 60 * 1000],
-    'lim_per_day': [250, 300],
-    'includes_patts': {
-        // "perspective": "python|C\\+\\+",
-        "colleagues": "R&D|deep|machine learning| ML | NLP | CV |artificial| AI |data scientist|speech recog|computer vision|language processing", // innovat| BI |intelligence|data
-        // "research": "scientist|space", // science|professor|research
-        // "executive": "founder| C.{1,2}O |lead|owner|principal|partner|investor|angel|entrepreneur", // head of
-        "ml_leaders": "at google|nvidia|deepmind|openai",
-    },
-    'exclude_patts': {
-    "technologies": "electro|web|mobile|java|script|PHP|frontend|front-end|design| QA | UI | UX ",
-    "HR": "headhunt|talent|trainer|sourcing|people| HR |recruit",
-    "other": "ARTIN",
-    }
-}) {
-    // SHOW CHANGE ON THE BUTTON
-    clickAnimation();
-
-    let timeout = getRandomInt(settings['click_delay'][0], settings['click_delay'][1]);
-    try {
-        // var timeout = getRandomInt(3010, 4224);
-
-        const profile_cls = "discover-person-card artdeco-card ember-view";
-        const connect_cls = "js-discover-person-card__action-btn full-width artdeco-button artdeco-button--2";
-        const cancel_cls = "artdeco-button__icon";
-        const alert_cls = "artdeco-modal__header ip-fuse-limit-alert__header ember-view";
-        const got_it_cls = "artdeco-button ip-fuse-limit-alert__primary-action artdeco-button--2 artdeco-button--primary ember-view";
-
-        // Check if limit got passed
-        let alerts = document.getElementsByClassName(alert_cls);
-        console.log("Alerts: ");
-        // console.log(alerts);
-        if (alerts.length > 0) {
-            timeout += getRandomInt(3 * 61 * 60 * 1000, 3 * 63 * 60 * 1000);
-            wait_until = Date.now() + getRandomInt(16 * 60 * 1000, 21 * 60 * 1000);
-            // timeout += getRandomInt(16*1000, 21*1000); // TESTING
-            console.log("Error => extra waiting!");
-            let got_its = document.getElementsByClassName(got_it_cls);
-            console.log(got_its);
-            console.log(got_its[0]);
-            try {
-                setTimeout(() => {
-                    got_its[0].click()
-                }, 2000);
-                const rows = texts;
-                var twoDArrStr = arrayToCSV(rows);
-                downloadString(twoDArrStr, "csv", "mynetwork.csv");
-            } catch (e) {
-                console.log(e)
-            }
-        }
-
-        // Generate correct regexps
-        const {include_patt, exclude_patt} = generateRegexps(settings);
-        const important_patt = /occupation( .* )connect/i;
-
-        let profiles = document.getElementsByClassName(profile_cls);
-
-        // Connect all GOOD
-        if (Date.now() > wait_until) {
-            console.log("Connect all GOOD. Now " + Date.now() + " | wait_until " + wait_until);
-            for (let profile of profiles) {
-                var str = profile.textContent;
-                str = str.replace(/([ \n\t,])+/g, " ");
-                try {
-                    str = str.match(important_patt)[1];
-                } catch (e) {
-
-                }
-                // continue;
-                // console.log(str);
-
-                const include = str.match(include_patt);
-                const exclude = str.match(exclude_patt);
-
-                const connects = profile.getElementsByClassName(connect_cls);
-
-                if (include != null && exclude == null && connects.length > 0 && Date.now() > wait_until) {
-                    console.log(str);
-                    console.log(include);
-                    console.log("\tYES");
-                    connects[0].click();
-                    res.connect++;
-                    texts.push([str.toString(), "1", Date.now().toString()]);
-                    window.scrollTo(0, document.body.scrollHeight);
-                    break;
-                }
-                window.scrollTo(0, document.body.scrollHeight);
-            }
-            wait_until = Date.now() + getRandomInt(12 * 1000, 18 * 1000);
-        }
-
-        // console.log(timeout);
-        // console.log(texts);
-        console.log(res);
-        // console.log(wait_until);
-        // console.log("Waiting for " + (timeout / 60 / 1000) + " mins");
-        setTimeout(() => {
-            connectFilteredProfiles(texts, res, wait_until)
-        }, timeout);
-    } catch (e) {
-        console.log("\n\nERROR:");
-        console.log(e);
-        const rows = texts;
-        var twoDArrStr = arrayToCSV(rows);
-        downloadString(twoDArrStr, "csv", "mynetwork.csv");
-        setTimeout(() => {
-            connectFilteredProfiles(texts, res, wait_until)
-        }, timeout + 5 * 1000);
-    }
-    // return;
-}
+// function connectFilteredProfiles(texts = [], res = {"connect": 0, "cancel": 0,}, settings = {
+//     'click_delay': [2001, 5003],
+//     'lim_per_spree': [30, 36],
+//     'spree_delay': [60 * 60 * 1000, 2 * 60 * 60 * 1000],
+//     'lim_per_day': [250, 300],
+//     'includes_patts': {
+//         // "perspective": "python|C\\+\\+",
+//         "colleagues": "R&D|deep|machine learning| ML | NLP | CV |artificial| AI |data scientist|speech recog|computer vision|language processing", // innovat| BI |intelligence|data
+//         // "research": "scientist|space", // science|professor|research
+//         // "executive": "founder| C.{1,2}O |lead|owner|principal|partner|investor|angel|entrepreneur", // head of
+//         "ml_leaders": "at google|nvidia|deepmind|openai",
+//     },
+//     'exclude_patts': {
+//     "technologies": "electro|web|mobile|java|script|PHP|frontend|front-end|design| QA | UI | UX ",
+//     "HR": "headhunt|talent|trainer|sourcing|people| HR |recruit",
+//     "other": "ARTIN",
+//     }
+// }) {
+//     // SHOW CHANGE ON THE BUTTON
+//     clickAnimation();
+//
+//     let timeout = getRandomInt(settings['click_delay'][0], settings['click_delay'][1]);
+//     try {
+//         // var timeout = getRandomInt(3010, 4224);
+//
+//         const profile_cls = "discover-person-card artdeco-card ember-view";
+//         const connect_cls = "js-discover-person-card__action-btn full-width artdeco-button artdeco-button--2";
+//         const cancel_cls = "artdeco-button__icon";
+//         const alert_cls = "artdeco-modal__header ip-fuse-limit-alert__header ember-view";
+//         const got_it_cls = "artdeco-button ip-fuse-limit-alert__primary-action artdeco-button--2 artdeco-button--primary ember-view";
+//
+//         // Check if limit got passed
+//         let alerts = document.getElementsByClassName(alert_cls);
+//         console.log("Alerts: ");
+//         // console.log(alerts);
+//         if (alerts.length > 0) {
+//             timeout += getRandomInt(3 * 61 * 60 * 1000, 3 * 63 * 60 * 1000);
+//             wait_until = Date.now() + getRandomInt(16 * 60 * 1000, 21 * 60 * 1000);
+//             // timeout += getRandomInt(16*1000, 21*1000); // TESTING
+//             console.log("Error => extra waiting!");
+//             let got_its = document.getElementsByClassName(got_it_cls);
+//             console.log(got_its);
+//             console.log(got_its[0]);
+//             try {
+//                 setTimeout(() => {
+//                     got_its[0].click()
+//                 }, 2000);
+//                 const rows = texts;
+//                 var twoDArrStr = arrayToCSV(rows);
+//                 downloadString(twoDArrStr, "csv", "mynetwork.csv");
+//             } catch (e) {
+//                 console.log(e)
+//             }
+//         }
+//
+//         // Generate correct regexps
+//         const {include_patt, exclude_patt} = generateRegexps(settings);
+//         const important_patt = /occupation( .* )connect/i;
+//
+//         let profiles = document.getElementsByClassName(profile_cls);
+//
+//         // Connect all GOOD
+//         if (Date.now() > wait_until) {
+//             console.log("Connect all GOOD. Now " + Date.now() + " | wait_until " + wait_until);
+//             for (let profile of profiles) {
+//                 var str = profile.textContent;
+//                 str = str.replace(/([ \n\t,])+/g, " ");
+//                 try {
+//                     str = str.match(important_patt)[1];
+//                 } catch (e) {
+//
+//                 }
+//                 // continue;
+//                 // console.log(str);
+//
+//                 const include = str.match(include_patt);
+//                 const exclude = str.match(exclude_patt);
+//
+//                 const connects = profile.getElementsByClassName(connect_cls);
+//
+//                 if (include != null && exclude == null && connects.length > 0 && Date.now() > wait_until) {
+//                     console.log(str);
+//                     console.log(include);
+//                     console.log("\tYES");
+//                     connects[0].click();
+//                     res.connect++;
+//                     texts.push([str.toString(), "1", Date.now().toString()]);
+//                     window.scrollTo(0, document.body.scrollHeight);
+//                     break;
+//                 }
+//                 window.scrollTo(0, document.body.scrollHeight);
+//             }
+//             wait_until = Date.now() + getRandomInt(12 * 1000, 18 * 1000);
+//         }
+//
+//         // console.log(timeout);
+//         // console.log(texts);
+//         console.log(res);
+//         // console.log(wait_until);
+//         // console.log("Waiting for " + (timeout / 60 / 1000) + " mins");
+//         setTimeout(() => {
+//             connectFilteredProfiles(texts, res, wait_until)
+//         }, timeout);
+//     } catch (e) {
+//         console.log("\n\nERROR:");
+//         console.log(e);
+//         const rows = texts;
+//         var twoDArrStr = arrayToCSV(rows);
+//         downloadString(twoDArrStr, "csv", "mynetwork.csv");
+//         setTimeout(() => {
+//             connectFilteredProfiles(texts, res, wait_until)
+//         }, timeout + 5 * 1000);
+//     }
+//     // return;
+// }
