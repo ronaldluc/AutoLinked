@@ -21,9 +21,8 @@ function main() {
     'use strict';
 
     createConnectBtn();
+    createExportBtn();
     createPopup();
-
-
 }
 
 function createConnectBtn() {

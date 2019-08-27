@@ -88,7 +88,7 @@ function createButton(btnText, elementId, listener, offset=0) {
 
     div.style.display = "inline-block";
     div.style.position = "fixed";
-    div.style.right = (3 + offset).toString() + "em";
+    div.style.right = (7 + offset).toString() + "em";
     div.style.top = "5em";
     div.style.zIndex = '995';
     div.style.cursor = 'pointer';
