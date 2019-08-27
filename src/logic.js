@@ -1,3 +1,31 @@
+// ==UserScript==
+// @name         AutoLinked v2
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://*/*
+// @require      https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/main.js
+// @require      https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/utilities.js
+// @require      https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/logic.js
+
+// @noframes
+// @grant GM_setValue
+// @grant GM_getValue
+// ==/UserScript==
+
+window.clearTimeout = window.clearTimeout.bind(window);
+window.clearInterval = window.clearInterval.bind(window);
+window.setTimeout = window.setTimeout.bind(window);
+window.setInterval = window.setInterval.bind(window);
+
+console.log("Base script loaded");
+
+(function() {
+    'use strict';
+    main();
+})();
+
 function iterJobs(texts = [], counter = 0) {
     // var btn_cls = "search-result__info pt3 pb4 ph0";
     var btn_cls = "search-result__wrapper";
@@ -301,13 +329,17 @@ function isAlert() {
  * @param settings      Includes all settings
  */
 function dayCycle(settings) {
+    console.log('DayCycle');
+    console.log(settings);
     initDay(settings);
 
     GM_setValue('conn_spree_max', getRandomInt(settings['lim_per_spree']));
     connectSpree(settings);
 
+    let wait = getRandomInt(settings['spree_delay']);
+    console.log(wait);
     if (GM_getValue('conn_today', 0) < GM_getValue('conn_max', 9999)) {
-        setTimeout(() => {dayCycle(settings)}, getRandomInt(settings['spree_delay']));
+        setTimeout(() => {dayCycle(settings)}, 10000);
     }
 }
 
@@ -317,6 +349,7 @@ function dayCycle(settings) {
  * @param settings      Includes all settings
  */
 function connectSpree(settings) {
+    console.log('ConnectSpree');
     connectToMatch(settings);
 
     if (GM_getValue('conn_spree', 0) < GM_getValue('conn_spree_max') && !isAlert()) {
@@ -334,6 +367,7 @@ function connectSpree(settings) {
  * @param settings      Includes all settings
  */
 function connectToMatch(settings) {
+    console.log('ConnectToMatch');
     const profile_cls = "discover-person-card artdeco-card ember-view";
     const connect_cls = "js-discover-person-card__action-btn full-width artdeco-button artdeco-button--2";
     const cancel_cls = "artdeco-button__icon";

@@ -34,11 +34,11 @@ function capitalize(s) {
 
 function getRandomInt(minMax, max=null) {
     if (max === null) {
-        let min = minMax[0];
+        let min = Math.ceil(minMax[0]);
         max = minMax[1];
+    } else {
+        let min = Math.ceil(minMax);
     }
-
-    let min = Math.ceil(minMax);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }

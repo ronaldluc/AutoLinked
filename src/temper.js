@@ -19,12 +19,9 @@ window.clearInterval = window.clearInterval.bind(window);
 window.setTimeout = window.setTimeout.bind(window);
 window.setInterval = window.setInterval.bind(window);
 
-console.log("Loaded");
-console.log(GM_getValue('foo', 'def'));
-console.log(GM_getValue('bar', 'def'));
+console.log("Base script loaded");
 
 (function() {
     'use strict';
-    GM_setValue('foo', {'date': 'DD.MM.YY', 'count': 14});
     main();
 })();
