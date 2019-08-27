@@ -55,7 +55,6 @@ function connectSpree(settings) {
     connectToMatch(settings);
 
     let thisSpree = (GM_getValue('conn_today', 0) - GM_getValue('conn_spree_start', 0));
-    console.log(thisSpree);
     if (thisSpree < GM_getValue('conn_spree_max') && !isAlert()) {
         setTimeout(() => {connectSpree(settings)}, getRandomInt(settings['click_delay']));
     }
