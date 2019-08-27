@@ -20,9 +20,11 @@ window.onload = function () {
 function main() {
     'use strict';
 
-    createConnectBtn();
-    createExportBtn();
-    createPopup();
+    if (window.self === window.top) {
+        createConnectBtn();
+        createExportBtn();
+        createPopup();
+    }
 }
 
 function createButton(btnText, elementId, listener, offset=0) {
