@@ -249,30 +249,161 @@ function clickThroughProfiles() {
     }
 }
 
-function clickAnimation() {
-    let btn = document.getElementById('connectBtn');
-    btn.style.background = 'gray';
-    btn.style.color = 'white';
-    // flashes color on click
-    setTimeout(function () {
-        btn.style.background = 'white';
-        btn.style.color = 'blue';
-    }, 300);
+function initDay(settings) {
+    if (GM_getValue('day', new Date("01/01/2000")).getTime() !== getTodayDate().getTime()) {
+        GM_setValue('conn_day', 0);
+        GM_setValue('conn_day_max', getRandomInt(settings['lim_per_day']));
+        GM_setValue('conn_spree', 0);
+        GM_setValue('texts', {});
+        GM_setValue('day', getTodayDate());
+    }
 }
 
-function connectFilteredProfiles(texts = [], res = {"connect": 0, "cancel": 0,}, wait_until = 0) {
+function saveDay(settings) {
+    let texts = GM_getValue('texts', {});
+
+    if (texts.length > 0) {
+        console.log("\nExporting today:");
+        let twoDArrStr = arrayToCSV(texts);
+        downloadString(twoDArrStr, "csv", 'AutoLinked_' + getTodayDate().toDateString() + '_' + texts.length + '.csv');
+    }
+}
+
+function isAlert() {
+    const alert_cls = "artdeco-modal__header ip-fuse-limit-alert__header ember-view";
+    const got_it_cls = "artdeco-button ip-fuse-limit-alert__primary-action artdeco-button--2 artdeco-button--primary ember-view";
+
+    let alerts = document.getElementsByClassName(alert_cls);
+    if (alerts.length > 0) {
+        console.log("Found alerts: ");
+        let got_its = document.getElementsByClassName(got_it_cls);
+        console.log(got_its);
+        console.log(got_its[0]);
+        try {
+            setTimeout(() => {
+                got_its[0].click()
+            }, 2000);
+        } catch (e) {
+            console.log(e)
+        }
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Initialize day cycle.
+ *
+ * Day cycle performs periodically connection sprees.
+ *
+ * @param settings      Includes all settings
+ */
+function dayCycle(settings) {
+    initDay();
+
+    GM_setValue('conn_spree_max', getRandomInt(settings['lim_per_spree']));
+    connectSpree(settings);
+
+    if (GM_getValue('conn_today', 0) < GM_getValue('conn_max', 9999)) {
+        setTimeout(() => {dayCycle(settings)}, getRandomInt(settings['spree_delay']));
+    }
+}
+
+/**
+ * Perform one connection spree.
+ *
+ * @param settings      Includes all settings
+ */
+function connectSpree(settings) {
+    connectToMatch(settings);
+
+    if (GM_getValue('conn_spree', 0) < GM_getValue('conn_spree_max') && !isAlert()) {
+        setTimeout(() => {connectSpree(settings)}, getRandomInt(settings['click_delay']) * 5);
+    } else {
+        saveDay(settings);
+    }
+}
+
+/**
+ * Connect to the first matching user.
+ *
+ * Connect to one user with descriptions matching RegExp from `settings`.
+ *
+ * @param settings      Includes all settings
+ */
+function connectToMatch(settings) {
+    const profile_cls = "discover-person-card artdeco-card ember-view";
+    const connect_cls = "js-discover-person-card__action-btn full-width artdeco-button artdeco-button--2";
+    const cancel_cls = "artdeco-button__icon";
+
+    let texts = GM_getValue('texts', {});
+    let conn_spree = GM_getValue('conn_spree', 0);
+
+    const {include_patt, exclude_patt} = generateRegexps(settings);
+    const important_patt = /occupation( .* )connect/i;
+
+    let profiles = document.getElementsByClassName(profile_cls);
+
+    for (let profile of profiles) {
+        var str = profile.textContent;
+        str = str.replace(/([ \n\t,])+/g, " ");
+        try {   // try to extract just the jop description
+            str = str.match(important_patt)[1];
+        } catch (e) {
+
+        }
+
+        const include = str.match(include_patt);
+        const exclude = str.match(exclude_patt);
+
+        const connects = profile.getElementsByClassName(connect_cls);
+
+        if (include != null && exclude == null && connects.length > 0) {    // is it a match?
+            console.log(str);
+            console.log(include);
+            console.log("\tYES");
+            connects[0].click();
+            ++conn_spree;
+            texts.push([str.toString(), "1", Date.now().toString()]);
+            break;
+        }
+        window.scrollTo(0, document.body.scrollHeight);  // Load more ppl
+    }
+
+    GM_setValue('texts', texts);
+    GM_setValue('conn_spree', conn_spree);
+}
+
+function connectFilteredProfiles(texts = [], res = {"connect": 0, "cancel": 0,}, settings = {
+    'click_delay': [2001, 5003],
+    'lim_per_spree': [30, 36],
+    'spree_delay': [60 * 60 * 1000, 2 * 60 * 60 * 1000],
+    'lim_per_day': [250, 300],
+    'includes_patts': {
+        // "perspective": "python|C\\+\\+",
+        "colleagues": "R&D|deep|machine learning| ML | NLP | CV |artificial| AI |data scientist|speech recog|computer vision|language processing", // innovat| BI |intelligence|data
+        // "research": "scientist|space", // science|professor|research
+        // "executive": "founder| C.{1,2}O |lead|owner|principal|partner|investor|angel|entrepreneur", // head of
+        "ml_leaders": "at google|nvidia|deepmind|openai",
+    },
+    'exclude_patts': {
+    "technologies": "electro|web|mobile|java|script|PHP|frontend|front-end|design| QA | UI | UX ",
+    "HR": "headhunt|talent|trainer|sourcing|people| HR |recruit",
+    "other": "ARTIN",
+    }
+}) {
     // SHOW CHANGE ON THE BUTTON
     clickAnimation();
 
-    var timeout = getRandomInt(2410, 3720);
+    let timeout = getRandomInt(settings['click_delay'][0], settings['click_delay'][1]);
     try {
         // var timeout = getRandomInt(3010, 4224);
 
-        var profile_cls = "discover-person-card artdeco-card ember-view";
-        var connect_cls = "js-discover-person-card__action-btn full-width artdeco-button artdeco-button--2";
-        var cancel_cls = "artdeco-button__icon";
-        var alert_cls = "artdeco-modal__header ip-fuse-limit-alert__header ember-view";
-        var got_it_cls = "artdeco-button ip-fuse-limit-alert__primary-action artdeco-button--2 artdeco-button--primary ember-view";
+        const profile_cls = "discover-person-card artdeco-card ember-view";
+        const connect_cls = "js-discover-person-card__action-btn full-width artdeco-button artdeco-button--2";
+        const cancel_cls = "artdeco-button__icon";
+        const alert_cls = "artdeco-modal__header ip-fuse-limit-alert__header ember-view";
+        const got_it_cls = "artdeco-button ip-fuse-limit-alert__primary-action artdeco-button--2 artdeco-button--primary ember-view";
 
         // Check if limit got passed
         let alerts = document.getElementsByClassName(alert_cls);
@@ -298,30 +429,9 @@ function connectFilteredProfiles(texts = [], res = {"connect": 0, "cancel": 0,},
             }
         }
 
-        var includes_patts = {
-            // "perspective": "python|C\\+\\+",
-            "colleagues": "R&D|deep|machine learning| ML | NLP | CV |artificial| AI |data scientist|speech recog|computer vision|language processing", // innovat| BI |intelligence|data
-            // "research": "scientist|space", // science|professor|research
-            // "executive": "founder| C.{1,2}O |lead|owner|principal|partner|investor|angel|entrepreneur", // head of
-            "ml_leaders": "at google|nvidia|deepmind|openai",
-        };
-        var exclude_patts = {
-            "technologies": "elektro|web|mobile|java|script|PHP|frontend|front-end|design| QA | UI | UX ",
-            "HR": "headhunt|talent|trainer|sourcing|people| HR |recruit",
-            "other": "ARTIN",
-        };
-        var include_str = "";
-        for (let [key, value] of Object.entries(includes_patts)) {
-            include_str += value + "|";
-        }
-        var exclude_str = "";
-        for (let [key, value] of Object.entries(exclude_patts)) {
-            exclude_str += value + "|";
-        }
-
-        var include_patt = new RegExp(include_str.slice(0, -1), "i");
-        var exclude_patt = new RegExp(exclude_str.slice(0, -1), "i");
-        var important_patt = /occupation( .* )connect/i;
+        // Generate correct regexps
+        const {include_patt, exclude_patt} = generateRegexps(settings);
+        const important_patt = /occupation( .* )connect/i;
 
         let profiles = document.getElementsByClassName(profile_cls);
 
@@ -339,10 +449,10 @@ function connectFilteredProfiles(texts = [], res = {"connect": 0, "cancel": 0,},
                 // continue;
                 // console.log(str);
 
-                var include = str.match(include_patt);
-                var exclude = str.match(exclude_patt);
+                const include = str.match(include_patt);
+                const exclude = str.match(exclude_patt);
 
-                var connects = profile.getElementsByClassName(connect_cls);
+                const connects = profile.getElementsByClassName(connect_cls);
 
                 if (include != null && exclude == null && connects.length > 0 && Date.now() > wait_until) {
                     console.log(str);
@@ -357,45 +467,6 @@ function connectFilteredProfiles(texts = [], res = {"connect": 0, "cancel": 0,},
                 window.scrollTo(0, document.body.scrollHeight);
             }
             wait_until = Date.now() + getRandomInt(12 * 1000, 18 * 1000);
-        } else if (false) {
-            console.log("Cancel all BAD. Now " + Date.now() + " | wait_until " + wait_until);
-            // Cancel one bad
-            for (let profile of profiles) {
-                var str = profile.textContent;
-                str = str.replace(/( |\n|\t)+/g, " ");
-                try {
-                    str = str.match(important_patt)[1];
-                } catch (e) {
-
-                }
-                // continue;
-                // console.log(str);
-
-                var include = str.match(include_patt);
-                var exclude = str.match(exclude_patt);
-
-                var connects = profile.getElementsByClassName(connect_cls);
-                var cancels = profile.getElementsByClassName(cancel_cls);
-
-                if (include != null && exclude == null && connects.length > 0) {
-                    // console.log("\tYES");
-                    // // console.log(connects);
-                    // // console.log(profile);
-                    // connects[0].click();
-                    // texts.push([str, 1]);
-                } else if (cancels.length > 0) {
-                    console.log("\tNO");
-                    cancels[0].click();
-                    res.cancel++;
-                    texts.push([str.toString(), "0", Date.now().toString()]);
-
-                    if (Date.now() + 60 * 1000 > wait_until) {
-                        timeout = getRandomInt(50, 100);
-                    }
-                    break;
-                }
-                window.scrollTo(0, document.body.scrollHeight);
-            }
         }
 
         // console.log(timeout);

@@ -32,8 +32,46 @@ function capitalize(s) {
     return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
+function getRandomInt(minMax, max=null) {
+    if (max === null) {
+        let min = minMax[0];
+        max = minMax[1];
+    }
+
+    let min = Math.ceil(minMax);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+function clickAnimation() {
+    let btn = document.getElementById('connectBtn');
+    btn.style.background = 'gray';
+    btn.style.color = 'white';
+    // flashes color on click
+    setTimeout(function () {
+        btn.style.background = 'white';
+        btn.style.color = 'blue';
+    }, 300);
+}
+
+function generateRegexps(settings) {
+    let include_str = "";
+    for (let [key, value] of Object.entries(settings['includes_patts'])) {
+        include_str += value + "|";
+    }
+    let exclude_str = "";
+    for (let [key, value] of Object.entries(settings['exclude_patts'])) {
+        exclude_str += value + "|";
+    }
+
+    const include_patt = new RegExp(include_str.slice(0, -1), "i");
+    const exclude_patt = new RegExp(exclude_str.slice(0, -1), "i");
+    return {include_patt, exclude_patt};
+}
+
+function getTodayDate() {
+    let date = new Date();
+    date.setHours(0,0,0,0);
+    return date;
 }
