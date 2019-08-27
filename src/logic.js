@@ -278,7 +278,7 @@ function clickThroughProfiles() {
 }
 
 function initDay(settings) {
-    if (Number(GM_getValue('day', 0) !== Number(getTodayDate()))){
+    if (Number(GM_getValue('day', 0)) !== Number(getTodayDate())){
         console.log('Initialized the day');
 
         GM_setValue('conn_day', 0);
