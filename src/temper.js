@@ -9,7 +9,7 @@
 // @require      https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/utilities.js
 // @require      https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/logic.js
 
-// @noframes //this makes sure we don't create extra buttons inside iframes, ads, etc
+// @noframes
 // @grant GM_setValue
 // @grant GM_getValue
 // ==/UserScript==

@@ -249,16 +249,20 @@ function clickThroughProfiles() {
     }
 }
 
+function clickAnimation() {
+    let btn = document.getElementById('connectBtn');
+    btn.style.background = 'gray';
+    btn.style.color = 'white';
+    // flashes color on click
+    setTimeout(function () {
+        btn.style.background = 'white';
+        btn.style.color = 'blue';
+    }, 300);
+}
+
 function connectFilteredProfiles(texts = [], res = {"connect": 0, "cancel": 0,}, wait_until = 0) {
     // SHOW CHANGE ON THE BUTTON
-    // let btn = document.getElementById('connectBtn');
-    // btn.style.background = 'gray';
-    // btn.style.color = 'white';
-    // // flashes color on click
-    // setTimeout(function() {
-    //     btn.style.background = 'white';
-    //     btn.style.color = 'blue';
-    // }, 300);
+    clickAnimation();
 
     var timeout = getRandomInt(2410, 3720);
     try {
