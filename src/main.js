@@ -17,18 +17,12 @@ window.onload = function () {
     console.log("The new stuff. It's loaded!")
 };
 
-window.clearTimeout = window.clearTimeout.bind(window);
-window.clearInterval = window.clearInterval.bind(window);
-window.setTimeout = window.setTimeout.bind(window);
-window.setInterval = window.setInterval.bind(window);
-
 function main() {
     'use strict';
 
-    if (window.self == window.top) {
-        createButton();
-        createPopup();
-    }//this makes sure we don't create extra buttons inside iframes, ads, etc
+    createButton();
+    createPopup();
+
 
 }
 
@@ -97,7 +91,6 @@ function clicked() {
             connectFilteredProfiles();
         }
     } else if (url[1] === 'search' && url[2] === 'results') {
-        // clickOnProfile();
         iterJobs();
     } else {
         var btn = document.getElementById('popup').parentNode;

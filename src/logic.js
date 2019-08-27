@@ -17,27 +17,27 @@ function iterJobs(texts = [], counter = 0) {
         str = str.replace(/( |\n|\t)+/g, " ");
         // var patt = /machine[a-z ]*learning.*at/i;
         console.log(str);
-        var body_patt = /2nd.*machine/i;
-        var name_patt = /([^,.\- ]+) [^,.\- ]+(,.+)? 2nd degree connection 2nd/i;
-        var company_patt = /machine[a-z ]*learning .* at (\w+)/i;
-        var research_patt = /research/i;
-        var social_patt = /([^,.\- ]+ [^,.\- ]+)/i;
+        const body_patt = /2nd.*machine/i;
+        const name_patt = /([^,.\- ]+) [^,.\- ]+(,.+)? 2nd degree connection 2nd/i;
+        const company_patt = /machine[a-z ]*learning .* at (\w+)/i;
+        const research_patt = /research/i;
+        const social_patt = /([^,.\- ]+ [^,.\- ]+)/i;
 
-        var body_text = str.match(body_patt);
-        var name = str.match(name_patt);
-        var company = str.match(company_patt);
-        var research = str.match(research_patt);
-        var social_connection = social_str.match(social_patt);
+        const body_text = str.match(body_patt);
+        const name = str.match(name_patt);
+        const company = str.match(company_patt);
+        const research = str.match(research_patt);
+        const social_connection = social_str.match(social_patt);
         // console.log(result);
         // console.log(result[1] + " | " + result[0]);
         console.log(profile);
         console.log(name);
 
-        var connect_cls = "search-result__action-button search-result__actions--primary artdeco-button artdeco-button--default artdeco-button--2 artdeco-button--secondary";
-        var connect_btns = profile.getElementsByClassName(connect_cls);
-        var add_note_cls = "artdeco-button artdeco-button--secondary artdeco-button--3 mr1";
-        var send_inv_cls = "artdeco-button artdeco-button--3 ml1";
-        var custom_id = "custom-message";
+        const connect_cls = "search-result__action-button search-result__actions--primary artdeco-button artdeco-button--default artdeco-button--2 artdeco-button--secondary";
+        const connect_btns = profile.getElementsByClassName(connect_cls);
+        const add_note_cls = "artdeco-button artdeco-button--secondary artdeco-button--3 mr1";
+        const send_inv_cls = "artdeco-button artdeco-button--3 ml1";
+        const custom_id = "custom-message";
 
         if (connect_btns.length < 1) {
             continue;
@@ -71,15 +71,14 @@ function iterJobs(texts = [], counter = 0) {
         }
         // console.log(body_text);
     }
-    var next_cls = "artdeco-pagination__button artdeco-pagination__button--next artdeco-button artdeco-button--muted artdeco-button--icon-right artdeco-button--1 artdeco-button--tertiary ember-view"
-    var next = document.getElementsByClassName(next_cls);
+    const next_cls = "artdeco-pagination__button artdeco-pagination__button--next artdeco-button artdeco-button--muted artdeco-button--icon-right artdeco-button--1 artdeco-button--tertiary ember-view"
+    let next = document.getElementsByClassName(next_cls);
     // return; //TODO: remove
-    var save_every = 200;
+    const save_every = 200;
     if (counter > save_every || profiles.length < 3) {
         counter -= save_every;
         // console.log(texts);
-        const rows = texts;
-        var twoDArrStr = arrayToCSV(rows);
+        let twoDArrStr = arrayToCSV(texts);
         downloadString(twoDArrStr, "csv", "linked_in_job_titles.csv");
     }
 
