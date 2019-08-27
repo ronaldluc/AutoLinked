@@ -278,18 +278,22 @@ function clickThroughProfiles() {
 }
 
 function initDay(settings) {
+    console.log('initDay');
+    console.log(Number(GM_getValue('day', 0)));
+    console.log(Number(getTodayDate()));
+
     if (Number(GM_getValue('day', 0)) !== Number(getTodayDate())){
         console.log('Initialized the day');
 
         GM_setValue('conn_day', 0);
         GM_setValue('conn_day_max', getRandomInt(settings['lim_per_day']));
         GM_setValue('texts', []);
-        GM_setValue('day', getTodayDate());
+        GM_setValue('day', Number(getTodayDate()));
     }
 }
 
 function saveDay(settings=null) {
-    let texts = GM_getValue('texts', {});
+    let texts = GM_getValue('texts', []);
 
     if (texts.length > 0) {
         console.log("\nExporting today:");
@@ -329,6 +333,7 @@ function isAlert() {
  */
 function dayCycle(settings) {
     console.log('DayCycle');
+    console.log(settings);
     initDay(settings);
 
     GM_setValue('conn_spree', 0);
