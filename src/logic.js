@@ -336,10 +336,8 @@ function dayCycle(settings) {
     GM_setValue('conn_spree_max', getRandomInt(settings['lim_per_spree']));
     connectSpree(settings);
 
-    let wait = getRandomInt(settings['spree_delay']);
-    console.log(wait);
     if (GM_getValue('conn_today', 0) < GM_getValue('conn_max', 9999)) {
-        setTimeout(() => {dayCycle(settings)}, 10000);
+        setTimeout(() => {dayCycle(settings)}, getRandomInt(settings['spree_delay']));
     }
 }
 
