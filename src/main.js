@@ -84,10 +84,10 @@ function connect() {
             // connectFilteredProfiles();
             const settings = {
                 'click_delay': [2001, 5003],
-                // 'lim_per_spree': [30, 36],
-                'lim_per_spree': [2, 3],
-                // 'spree_delay': [60 * 60 * 1000, 2 * 60 * 60 * 1000],
-                'spree_delay': [60 * 1000, 2 * 60 * 1000],
+                'lim_per_spree': [30, 36],
+                // 'lim_per_spree': [2, 3],
+                'spree_delay': [60 * 60 * 1000, 2 * 60 * 60 * 1000],
+                // 'spree_delay': [60 * 1000, 2 * 60 * 1000],
                 'lim_per_day': [250, 300],
                 'includes_patts': {
                     // "perspective": "python|C\\+\\+",
