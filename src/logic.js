@@ -371,7 +371,6 @@ function connectSpree(settings) {
 function connectToMatch(settings) {
     console.log('ConnectToMatch');
     const profile_cls = "discover-person-card artdeco-card ember-view";
-    // const connect_cls = "js-discover-person-card__action-btn full-width artdeco-button artdeco-button--2";
     const connect_cls = "artdeco-button artdeco-button--2 artdeco-button--full artdeco-button--secondary";
     const cancel_cls = "artdeco-button__icon";
 
@@ -403,7 +402,7 @@ function connectToMatch(settings) {
             console.log("\tYES");
             connects[0].click();
             ++conn_spree;
-            texts.push([str.toString(), "1", Date.now().toString()]);
+            texts.push([str.toString(), Date.now().toString()]);
             break;
         }
         window.scrollTo(0, document.body.scrollHeight);  // Load more ppl

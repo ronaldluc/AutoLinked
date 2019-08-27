@@ -23,6 +23,7 @@ function main() {
     if (window.self === window.top) {
         createConnectBtn();
         createExportBtn();
+        createResetBtn();
         createPopup();
     }
 }
@@ -33,6 +34,10 @@ function createConnectBtn() {
 
 function createExportBtn() {
     createButton('Export!', 'exportBtn', exportInvited, 6);
+}
+
+function createResetBtn() {
+    createButton('Reset!', 'resetBtn', () => {GM_setValue('texts', texts);}, 12);
 }
 
 function createPopup() {
