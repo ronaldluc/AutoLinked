@@ -25,11 +25,6 @@ function downloadString(text, fileType, fileName) {
     setTimeout(function () {
         URL.revokeObjectURL(a.href);
     }, 1500);
-
-    // var link = document.createElement('a');
-    // link.setAttribute('href', 'data:text/plain,' + text);
-    // link.setAttribute('download', fileName);
-    // document.getElementsByTagName("body")[0].appendChild(link).click();
 }
 
 function capitalize(s) {
@@ -108,5 +103,16 @@ function createButton(btnText, elementId, listener, offset=0) {
     btn.style.textDecoration = 'none';
     btn.style.fontSize = '0.8em';
 
-    document.getElementById(elementId).addEventListener('click', listener, false);
+    document.getElementById(elementId).addEventListener('click', () => {flashButton(elementId); listener();}, false);
+}
+
+function flashButton(elementId) {
+    let btn = document.getElementById(elementId);
+    btn.style.background = 'purple';
+    btn.style.color = 'white';
+    // flashes color on click
+    setTimeout(function () {
+        btn.style.background = 'white';
+        btn.style.color = 'blue';
+    }, 300);
 }
