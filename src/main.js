@@ -20,39 +20,18 @@ window.onload = function () {
 function main() {
     'use strict';
 
-    createButton();
+    createConnectBtn();
     createPopup();
 
 
 }
 
+function createConnectBtn() {
+    createButton('Connect!', 'connectBtn', connect);
+}
 
-function createButton() {
-
-    let div = document.createElement('div');
-    div.innerHTML = '<a id="connectBtn">Connect!</a>';
-
-    div.style.display = "inline-block";
-    div.style.position = "fixed";
-    div.style.right = "3em";
-    div.style.top = "5em";
-    div.style.zIndex = '995';
-    div.style.cursor = 'pointer';
-
-    document.body.append(div);
-
-    let btn = document.getElementById('connectBtn');
-
-    btn.style.background = 'white';
-    btn.style.color = 'blue';
-    btn.style.fontWeight = '800';
-    btn.style.padding = '5px';
-    btn.style.border = 'solid 2px black';
-    btn.style.borderRadius = '7px';
-    btn.style.textDecoration = 'none';
-    btn.style.fontSize = '0.8em';
-
-    document.getElementById('connectBtn').addEventListener('click', clicked, false);
+function createExportBtn() {
+    createButton('Export!', 'exportBtn', exportInvited, 10);
 }
 
 function createPopup() {
@@ -80,7 +59,7 @@ function createPopup() {
     btn.style.fontSize = '1em';
 }
 
-function clicked() {
+function connect() {
     var url = location.pathname.split('/');
     // alert(url.join(' '));
     if (url[1] === 'mynetwork') {
@@ -118,4 +97,8 @@ function clicked() {
             btn.style.display = "none";
         }, 4000)
     }
+}
+
+function exportInvited() {
+    saveDay();
 }

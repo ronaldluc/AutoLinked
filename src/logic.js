@@ -7,7 +7,7 @@
 // @match        https://*/*
 // @require      https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/main.js
 // @require      https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/utilities.js
-// @require      https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/logic.js
+////// @require      https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/logic.js
 
 // @noframes
 // @grant GM_setValue
@@ -283,13 +283,12 @@ function initDay(settings) {
 
         GM_setValue('conn_day', 0);
         GM_setValue('conn_day_max', getRandomInt(settings['lim_per_day']));
-        GM_setValue('conn_spree', 0);
-        GM_setValue('texts', {});
+        GM_setValue('texts', []);
         GM_setValue('day', getTodayDate());
     }
 }
 
-function saveDay(settings) {
+function saveDay(settings=null) {
     let texts = GM_getValue('texts', {});
 
     if (texts.length > 0) {
@@ -333,6 +332,7 @@ function dayCycle(settings) {
     console.log(settings);
     initDay(settings);
 
+    GM_setValue('conn_spree', 0);
     GM_setValue('conn_spree_max', getRandomInt(settings['lim_per_spree']));
     connectSpree(settings);
 
@@ -351,7 +351,7 @@ function connectSpree(settings) {
     connectToMatch(settings);
 
     if (GM_getValue('conn_spree', 0) < GM_getValue('conn_spree_max') && !isAlert()) {
-        setTimeout(() => {connectSpree(settings)}, getRandomInt(settings['click_delay']) * 5);
+        setTimeout(() => {connectSpree(settings)}, getRandomInt(settings['click_delay']));
     } else {
         saveDay(settings);
     }
@@ -367,10 +367,11 @@ function connectSpree(settings) {
 function connectToMatch(settings) {
     console.log('ConnectToMatch');
     const profile_cls = "discover-person-card artdeco-card ember-view";
-    const connect_cls = "js-discover-person-card__action-btn full-width artdeco-button artdeco-button--2";
+    // const connect_cls = "js-discover-person-card__action-btn full-width artdeco-button artdeco-button--2";
+    const connect_cls = "artdeco-button artdeco-button--2 artdeco-button--full artdeco-button--secondary";
     const cancel_cls = "artdeco-button__icon";
 
-    let texts = GM_getValue('texts', {});
+    let texts = GM_getValue('texts', []);
     let conn_spree = GM_getValue('conn_spree', 0);
 
     const {include_patt, exclude_patt} = generateRegexps(settings);
@@ -386,6 +387,8 @@ function connectToMatch(settings) {
         } catch (e) {
 
         }
+
+        console.log(str);
 
         const include = str.match(include_patt);
         const exclude = str.match(exclude_patt);

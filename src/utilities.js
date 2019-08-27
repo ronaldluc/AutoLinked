@@ -25,6 +25,11 @@ function downloadString(text, fileType, fileName) {
     setTimeout(function () {
         URL.revokeObjectURL(a.href);
     }, 1500);
+
+    // var link = document.createElement('a');
+    // link.setAttribute('href', 'data:text/plain,' + text);
+    // link.setAttribute('download', fileName);
+    // document.getElementsByTagName("body")[0].appendChild(link).click();
 }
 
 function capitalize(s) {
@@ -75,4 +80,31 @@ function getTodayDate() {
     let date = new Date();
     date.setHours(0,0,0,0);
     return date;
+}
+
+function createButton(btnText, elementId, listener, offset=0) {
+    let div = document.createElement('div');
+    div.innerHTML = '<a id="connectBtn">' + btnText + '</a>';
+
+    div.style.display = "inline-block";
+    div.style.position = "fixed";
+    div.style.right = (3 + offset).toString() + "em";
+    div.style.top = "5em";
+    div.style.zIndex = '995';
+    div.style.cursor = 'pointer';
+
+    document.body.append(div);
+
+    let btn = document.getElementById(elementId);
+
+    btn.style.background = 'white';
+    btn.style.color = 'blue';
+    btn.style.fontWeight = '800';
+    btn.style.padding = '5px';
+    btn.style.border = 'solid 2px black';
+    btn.style.borderRadius = '7px';
+    btn.style.textDecoration = 'none';
+    btn.style.fontSize = '0.8em';
+
+    document.getElementById(elementId).addEventListener('click', listener, false);
 }
