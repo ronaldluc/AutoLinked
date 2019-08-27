@@ -56,10 +56,11 @@ function clickThroughProfiles() {
  */
 function dayCycle(settings) {
     console.log('DayCycle');
+    console.log('Already invited: ', GM_getValue('conn_today', 0));
     console.log(settings);
     initDay(settings);
 
-    GM_setValue('conn_spree', 0);
+    GM_setValue('conn_spree', GM_getValue('conn_today'));
     GM_setValue('conn_spree_max', getRandomInt(settings['lim_per_spree']));
     connectSpree(settings);
 
@@ -79,7 +80,8 @@ function connectSpree(settings) {
     console.log('ConnectSpree');
     connectToMatch(settings);
 
-    if (GM_getValue('conn_spree', 0) < GM_getValue('conn_spree_max') && !isAlert()) {
+    if (GM_getValue('conn_today', 0) - GM_getValue('conn_spree_start', 0) < GM_getValue('conn_spree_max')
+        && !isAlert()) {
         setTimeout(() => {connectSpree(settings)}, getRandomInt(settings['click_delay']));
     }
 }
@@ -98,7 +100,7 @@ function connectToMatch(settings) {
     const cancel_cls = "artdeco-button__icon";
 
     let texts = GM_getValue('texts', []);
-    let conn_spree = GM_getValue('conn_spree', 0);
+    let conn_spree = GM_getValue('conn_today', 0);
 
     const {include_patt, exclude_patt} = generateRegexps(settings);
     const important_patt = /occupation( .* )connect/i;
@@ -132,7 +134,7 @@ function connectToMatch(settings) {
     }
 
     GM_setValue('texts', texts);
-    GM_setValue('conn_spree', conn_spree);
+    GM_setValue('conn_today', conn_spree);
 }
 
 

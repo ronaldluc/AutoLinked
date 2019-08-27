@@ -6,10 +6,10 @@
 // @license          None for now
 // @include          https://www.linkedin.com/*
 // @version          0.2
-// @match        https://*/*
-// @require      https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/main.js
-// @require      https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/utilities.js
-// @require      https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/logic.js
+// @match            https://www.linkedin.com/*
+// @require          https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/main.js
+// @require          https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/utilities.js
+// @require          https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/logic.js
 
 // @noframes
 // @grant GM_setValue
@@ -22,8 +22,3 @@ window.setTimeout = window.setTimeout.bind(window);
 window.setInterval = window.setInterval.bind(window);
 
 console.log("Base script loaded");
-
-// (function() {
-//     'use strict';
-//     main();
-// })();
