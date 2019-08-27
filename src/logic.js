@@ -14,12 +14,8 @@
 // @grant GM_getValue
 // ==/UserScript==
 
-window.clearTimeout = window.clearTimeout.bind(window);
-window.clearInterval = window.clearInterval.bind(window);
-window.setTimeout = window.setTimeout.bind(window);
-window.setInterval = window.setInterval.bind(window);
 
-console.log("Base script loaded");
+console.log("Logic script loaded");
 
 /**
  * Initialize day cycle.

@@ -11,6 +11,11 @@
 // ==/UserScript==
 
 
+window.clearTimeout = window.clearTimeout.bind(window);
+window.clearInterval = window.clearInterval.bind(window);
+window.setTimeout = window.setTimeout.bind(window);
+window.setInterval = window.setInterval.bind(window);
+
 window.onload = function () {
     console.log("The new stuff. It's loaded!")
 };
