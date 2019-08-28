@@ -168,7 +168,11 @@ function pruneInvitations() {
     const tasks = [ ['My Network', 'span'],
                     ['See all', 'span'],
                     ['Sent', 'a'],
-                    ['Next', 'a'],
+        ['Next', 'a'],
+        ['Next', 'a'],
+        ['Next', 'a'],
+        ['Next', 'a'],
+        ['Next', 'a'],
     ];
 
     let delay = 0;
@@ -176,12 +180,6 @@ function pruneInvitations() {
         gotoElementByText(task[0], delay, task[1]);
         delay += 1500;
     }
-
-    // gotoElementByText('See all ', 1000, 'span');
-    // gotoElementByText('Sent', 2500, 'a');
-    // gotoElementByText('Next', 3500, 'a');
-    // gotoElementByText('Next', 5500, 'a');
-    // gotoElementByText('Next', 7500, 'a');
 }
 
 function gotoCls(cls, delay) {
@@ -208,7 +206,7 @@ function gotoManageInvitations() {
 function gotoElementByText(text, delay, tag = 'a') {
     setTimeout(() => {
         getElementsByText(text, tag)[0].click();
-    });
+    }, delay);
 }
 
 function getElementsByText(str, tag = 'a') {
