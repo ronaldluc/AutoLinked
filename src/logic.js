@@ -115,6 +115,7 @@ function initDay(settings) {
 
     if (Number(GM_getValue('day', 0)) !== Number(getTodayDate())){
         console.log('Initialized the day');
+        saveDay(settings);
 
         GM_setValue('conn_day', 0);
         GM_setValue('conn_day_max', getRandomInt(settings['lim_per_day']));
@@ -129,7 +130,7 @@ function saveDay(settings=null) {
     if (texts.length > 0) {
         console.log("\nExporting today:");
         let twoDArrStr = arrayToCSV(texts);
-        downloadString(twoDArrStr, "csv", 'AutoLinked_' + getTodayDate().toDateString() + '_' + texts.length + '.csv');
+        downloadString(twoDArrStr, "csv", dateToString(GM_getValue('day', 0)) + '_AutoLinked_' + texts.length + '.csv');
     }
 }
 
@@ -154,6 +155,18 @@ function isAlert() {
     }
     return false;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Invitation pruning
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function pruneInvitations() {
+    const mynetwork_cls = "mynetwork-tab-icon";
+
+    let mynetwork = document.getElementById(mynetwork_cls);
+    mynetwork.click();
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END OF REFACTORED CODE

@@ -32,6 +32,8 @@ function main() {
         createConnectBtn();
         createExportBtn();
         createResetBtn();
+        createPruneBtn();
+
         createPopup();
     }
 }
@@ -46,6 +48,10 @@ function createExportBtn() {
 
 function createResetBtn() {
     createButton('Reset!', 'resetBtn', () => {GM_setValue('texts', []);}, 12);
+}
+
+function createPruneBtn() {
+    createButton('Prune!', 'pruneBtn', () => {pruneInvitations()}, 16);
 }
 
 function createPopup() {
