@@ -34,6 +34,7 @@ const default_settings = {
     },
 };
 
+// Feel free to overwrite `settings` with your own settings by starting from the `default_settings` above
 let settings = {};
 
 window.clearTimeout = window.clearTimeout.bind(window);
@@ -42,7 +43,7 @@ window.setTimeout = window.setTimeout.bind(window);
 window.setInterval = window.setInterval.bind(window);
 
 window.onload = function () {
-    console.log("The new stuff. It's loaded!")
+    console.log("The new stuff. It's loaded! v0.3");
 };
 
 (function () {
@@ -109,14 +110,12 @@ function createPopup() {
 }
 
 function connect() {
-    var url = location.pathname.split('/');
+    let url = location.pathname.split('/');
     // alert(url.join(' '));
     if (url[1] === 'mynetwork') {
         if (url.length > 2 && url[2].toLowerCase() === 'invite-connect') {
             clickThroughProfiles();
         } else {
-            // setTimeout(connectFilteredProfiles, 42 * 60 * 1000);
-            // connectFilteredProfiles();
             if (settings !== null) {
                 dayCycle(Object.assign({}, default_settings, settings));
                 // dayCycle(deepmerge(default_settings, settings));     // neat option, but concatenates arrays

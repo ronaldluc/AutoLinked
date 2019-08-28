@@ -28,13 +28,14 @@ function dayCycle(settings) {
     console.log('DayCycle');
     console.log('Already invited: ', GM_getValue('conn_today', 0));
     console.log(settings);
+
     initDay(settings);
 
     GM_setValue('conn_spree_start', GM_getValue('conn_today'));
     GM_setValue('conn_spree_max', getRandomInt(settings['lim_per_spree']));
     connectSpree(settings);
 
-    if (GM_getValue('conn_today', 0) < GM_getValue('conn_max', 9999)) {
+    if (GM_getValue('conn_day', 0) < GM_getValue('conn_day_max', 9999)) {
         setTimeout(() => {
             dayCycle(settings)
         }, getRandomInt(settings['spree_delay']));
@@ -140,6 +141,10 @@ function initDay(settings) {
         GM_setValue('texts', []);
         GM_setValue('day', Number(getTodayDate()));
     }
+
+    console.log("conn_day", GM_getValue('conn_day'));
+    console.log("conn_day_max", GM_getValue('conn_day_max'));
+    console.log("");
 }
 
 function saveDay(settings = null) {
