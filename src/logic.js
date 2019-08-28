@@ -180,6 +180,26 @@ function pruneInvitations() {
         gotoElementByText(task[0], delay, task[1]);
         delay += 1500;
     }
+
+    setTimeout(pruneOld, delay);
+}
+
+function pruneOld() {
+    const inv_card_cls = "invitation-card--selectable";
+    const time_cls = "time-ago";
+    const withdraw_cls = "invitation-card__action-btn artdeco-button";
+
+    let inv_cards = document.getElementsByClassName(inv_card_cls);
+
+    for (let card of inv_cards) {
+        const old_patt = /\d+ (week|month|year)/i;
+        let time = card.getElementsByClassName(time_cls)[0].innerHTML;
+        const res = time.match(old_patt);
+
+        if (res != null) {
+            card.getElementsByClassName(withdraw_cls)[0].click();
+        }
+    }
 }
 
 function gotoCls(cls, delay) {
