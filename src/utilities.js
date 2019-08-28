@@ -128,3 +128,27 @@ function dateToString(date) {
 
     return mm + '_' + dd + '_' + yyyy;
 }
+
+function gotoCls(cls, delay) {
+    setTimeout(() => {
+        let btn = document.getElementsByClassName(cls)[0];
+        btn.click();
+    }, delay);
+}
+
+function gotoId(id, delay) {
+    setTimeout(() => {
+        let btn = document.getElementById(id);
+        btn.click();
+    }, delay);
+}
+
+function gotoElementByText(text, delay, tag = 'a') {
+    setTimeout(() => {
+        getElementsByText(text, tag)[0].click();
+    }, delay);
+}
+
+function getElementsByText(str, tag = 'a') {
+    return Array.prototype.slice.call(document.getElementsByTagName(tag)).filter(el => el.textContent.includes(str.trim()));
+}

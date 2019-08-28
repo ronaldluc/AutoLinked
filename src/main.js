@@ -110,7 +110,10 @@ function connect() {
                     "technologies": "electro|web|mobile|java|script|PHP|frontend|front-end|design| QA | UI | UX ",
                     "HR": "headhunt|talent|trainer|sourcing|people| HR |recruit",
                     "other": "ARTIN",
-                }
+                },
+                'pruning': {
+                    'old_patt': '\\d+ (week|month|year)',
+                },
             };
             dayCycle(settings);
         }

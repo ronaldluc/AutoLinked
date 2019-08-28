@@ -111,7 +111,16 @@ function connectToMatch(settings) {
     GM_setValue('conn_today', conn_spree);
 }
 
-
+/**
+ * Initialize the day (once a day).
+ *
+ * Check if now is a new day.
+ * Export yesterdays connections to a csv.
+ * Set up old invitation pruning in the next spree waiting period.
+ * Reset day parameters. Set today as the new date.
+ *
+ * @param settings
+ */
 function initDay(settings) {
     console.log('initDay');
     console.log(Number(GM_getValue('day', 0)));
@@ -120,6 +129,11 @@ function initDay(settings) {
     if (Number(GM_getValue('day', 0)) !== Number(getTodayDate())) {
         console.log('Initialized the day');
         saveDay(settings);
+        setTimeout(() => {
+            pruneInvitations(settings, () => {
+                gotoElementByText('My Network', 0, 'span')
+            });
+        }, Math.floor(settings['spree_delay'][0] / 2));
 
         GM_setValue('conn_day', 0);
         GM_setValue('conn_day_max', getRandomInt(settings['lim_per_day']));
@@ -164,10 +178,14 @@ function isAlert() {
 // Invitation pruning
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function pruneInvitations() {
-    const tasks = [ ['My Network', 'span'],
-                    ['See all', 'span'],
-                    ['Sent', 'a'],
+function pruneInvitations(settings, callback = null) {
+    const tasks = [
+        ['My Network', 'span'],
+        ['See all', 'span'],
+        ['Sent', 'a'],
+        ['Next', 'a'],
+        ['Next', 'a'],
+        ['Next', 'a'],
         ['Next', 'a'],
         ['Next', 'a'],
         ['Next', 'a'],
@@ -181,56 +199,33 @@ function pruneInvitations() {
         delay += 1500;
     }
 
-    setTimeout(pruneOld, delay);
+    setTimeout(() => {
+        pruneOld(settings);
+    }, delay);
+
+    if (callback) {
+        setTimeout(callback, delay + 6000);
+    }
 }
 
-function pruneOld() {
+function pruneOld(settings) {
+    console.log("PruneOld");
     const inv_card_cls = "invitation-card--selectable";
     const time_cls = "time-ago";
+
     const withdraw_cls = "invitation-card__action-btn artdeco-button";
 
     let inv_cards = document.getElementsByClassName(inv_card_cls);
-
     for (let card of inv_cards) {
-        const old_patt = /\d+ (week|month|year)/i;
+        const old_patt = new RegExp(settings['prune']['old_patt'], 'i');
         let time = card.getElementsByClassName(time_cls)[0].innerHTML;
         const res = time.match(old_patt);
+        console.log(res);
 
         if (res != null) {
             card.getElementsByClassName(withdraw_cls)[0].click();
         }
     }
-}
-
-function gotoCls(cls, delay) {
-    setTimeout(() => {
-        let btn = document.getElementsByClassName(cls)[0];
-        btn.click();
-    }, delay);
-}
-
-function gotoId(id, delay) {
-    setTimeout(() => {
-        let btn = document.getElementById(id);
-        btn.click();
-    }, delay);
-}
-
-function gotoManageInvitations() {
-    const see_all_cls = "mn-invitations-preview__manage-all";
-
-    let see_all = document.getElementById(see_all_cls);
-    see_all.click();
-}
-
-function gotoElementByText(text, delay, tag = 'a') {
-    setTimeout(() => {
-        getElementsByText(text, tag)[0].click();
-    }, delay);
-}
-
-function getElementsByText(str, tag = 'a') {
-    return Array.prototype.slice.call(document.getElementsByTagName(tag)).filter(el => el.textContent.includes(str.trim()));
 }
 
 
