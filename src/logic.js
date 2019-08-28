@@ -35,7 +35,9 @@ function dayCycle(settings) {
     connectSpree(settings);
 
     if (GM_getValue('conn_today', 0) < GM_getValue('conn_max', 9999)) {
-        setTimeout(() => {dayCycle(settings)}, getRandomInt(settings['spree_delay']));
+        setTimeout(() => {
+            dayCycle(settings)
+        }, getRandomInt(settings['spree_delay']));
     } else {
         saveDay(settings);
     }
@@ -52,7 +54,9 @@ function connectSpree(settings) {
 
     let thisSpree = (GM_getValue('conn_today', 0) - GM_getValue('conn_spree_start', 0));
     if (thisSpree < GM_getValue('conn_spree_max') && !isAlert()) {
-        setTimeout(() => {connectSpree(settings)}, getRandomInt(settings['click_delay']));
+        setTimeout(() => {
+            connectSpree(settings)
+        }, getRandomInt(settings['click_delay']));
     }
 }
 
@@ -113,7 +117,7 @@ function initDay(settings) {
     console.log(Number(GM_getValue('day', 0)));
     console.log(Number(getTodayDate()));
 
-    if (Number(GM_getValue('day', 0)) !== Number(getTodayDate())){
+    if (Number(GM_getValue('day', 0)) !== Number(getTodayDate())) {
         console.log('Initialized the day');
         saveDay(settings);
 
@@ -124,7 +128,7 @@ function initDay(settings) {
     }
 }
 
-function saveDay(settings=null) {
+function saveDay(settings = null) {
     let texts = GM_getValue('texts', []);
 
     if (texts.length > 0) {
@@ -161,11 +165,23 @@ function isAlert() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function pruneInvitations() {
-    gotoElementByText('My Network', 0, 'span');
-    gotoElementByText('Sent', 1500, 'a');
-    gotoElementByText('Next', 3500, 'a');
-    gotoElementByText('Next', 5500, 'a');
-    gotoElementByText('Next', 7500, 'a');
+    const tasks = [ ['My Network', 'span'],
+                    ['See all', 'span'],
+                    ['Sent', 'a'],
+                    ['Next', 'a'],
+    ];
+
+    let delay = 0;
+    for (let task of tasks) {
+        gotoElementByText(task[0], delay, task[1]);
+        delay += 1500;
+    }
+
+    // gotoElementByText('See all ', 1000, 'span');
+    // gotoElementByText('Sent', 2500, 'a');
+    // gotoElementByText('Next', 3500, 'a');
+    // gotoElementByText('Next', 5500, 'a');
+    // gotoElementByText('Next', 7500, 'a');
 }
 
 function gotoCls(cls, delay) {
@@ -196,7 +212,7 @@ function gotoElementByText(text, delay, tag = 'a') {
 }
 
 function getElementsByText(str, tag = 'a') {
-    return Array.prototype.slice.call(document.getElementsByTagName(tag)).filter(el => el.textContent.trim() === str.trim());
+    return Array.prototype.slice.call(document.getElementsByTagName(tag)).filter(el => el.textContent.includes(str.trim()));
 }
 
 

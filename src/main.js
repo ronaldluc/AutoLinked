@@ -20,7 +20,7 @@ window.onload = function () {
     console.log("The new stuff. It's loaded!")
 };
 
-(function() {
+(function () {
     'use strict';
     main();
 })();
@@ -47,11 +47,15 @@ function createExportBtn() {
 }
 
 function createResetBtn() {
-    createButton('Reset!', 'resetBtn', () => {GM_setValue('texts', []);}, 12);
+    createButton('Reset!', 'resetBtn', () => {
+        GM_setValue('texts', []);
+    }, 12);
 }
 
 function createPruneBtn() {
-    createButton('Prune!', 'pruneBtn', () => {pruneInvitations()}, 16);
+    createButton('Prune!', 'pruneBtn', () => {
+        pruneInvitations()
+    }, 16);
 }
 
 function createPopup() {

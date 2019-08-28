@@ -32,7 +32,7 @@ function capitalize(s) {
     return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
-function getRandomInt(minMax, max=null) {
+function getRandomInt(minMax, max = null) {
     let min = 0;
     if (max === null) {
         min = Math.ceil(minMax[0]);
@@ -73,11 +73,11 @@ function generateRegexps(settings) {
 
 function getTodayDate() {
     let date = new Date();
-    date.setHours(0,0,0,0);
+    date.setHours(0, 0, 0, 0);
     return date;
 }
 
-function createButton(btnText, elementId, listener, offset=0) {
+function createButton(btnText, elementId, listener, offset = 0) {
     console.log('Creating a button');
     console.log(btnText, elementId, listener, offset);
     let div = document.createElement('div');
@@ -103,7 +103,10 @@ function createButton(btnText, elementId, listener, offset=0) {
     btn.style.textDecoration = 'none';
     btn.style.fontSize = '0.8em';
 
-    document.getElementById(elementId).addEventListener('click', () => {flashButton(elementId); listener();}, false);
+    document.getElementById(elementId).addEventListener('click', () => {
+        flashButton(elementId);
+        listener();
+    }, false);
 }
 
 function flashButton(elementId) {
