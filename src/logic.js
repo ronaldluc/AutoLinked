@@ -161,10 +161,42 @@ function isAlert() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function pruneInvitations() {
-    const mynetwork_cls = "mynetwork-tab-icon";
+    gotoElementByText('My Network', 0, 'span');
+    gotoElementByText('Sent', 1500, 'a');
+    gotoElementByText('Next', 3500, 'a');
+    gotoElementByText('Next', 5500, 'a');
+    gotoElementByText('Next', 7500, 'a');
+}
 
-    let mynetwork = document.getElementById(mynetwork_cls);
-    mynetwork.click();
+function gotoCls(cls, delay) {
+    setTimeout(() => {
+        let btn = document.getElementsByClassName(cls)[0];
+        btn.click();
+    }, delay);
+}
+
+function gotoId(id, delay) {
+    setTimeout(() => {
+        let btn = document.getElementById(id);
+        btn.click();
+    }, delay);
+}
+
+function gotoManageInvitations() {
+    const see_all_cls = "mn-invitations-preview__manage-all";
+
+    let see_all = document.getElementById(see_all_cls);
+    see_all.click();
+}
+
+function gotoElementByText(text, delay, tag = 'a') {
+    setTimeout(() => {
+        getElementsByText(text, tag)[0].click();
+    });
+}
+
+function getElementsByText(str, tag = 'a') {
+    return Array.prototype.slice.call(document.getElementsByTagName(tag)).filter(el => el.textContent.trim() === str.trim());
 }
 
 
