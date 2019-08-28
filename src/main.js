@@ -32,7 +32,7 @@ const default_settings = {
     },
 };
 
-const settings = null;
+let settings = null;
 
 window.clearTimeout = window.clearTimeout.bind(window);
 window.clearInterval = window.clearInterval.bind(window);
