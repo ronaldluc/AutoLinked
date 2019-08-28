@@ -26,12 +26,12 @@ console.log("Logic script loaded");
  */
 function dayCycle(settings) {
     console.log('DayCycle');
-    console.log('Already invited: ', GM_getValue('conn_today', 0));
+    console.log('Already invited: ', GM_getValue('conn_day', 0));
     console.log(settings);
 
     initDay(settings);
 
-    GM_setValue('conn_spree_start', GM_getValue('conn_today'));
+    GM_setValue('conn_spree_start', GM_getValue('conn_day'));
     GM_setValue('conn_spree_max', getRandomInt(settings['lim_per_spree']));
     connectSpree(settings);
 
@@ -53,7 +53,7 @@ function connectSpree(settings) {
     console.log('ConnectSpree');
     connectToMatch(settings);
 
-    let thisSpree = (GM_getValue('conn_today', 0) - GM_getValue('conn_spree_start', 0));
+    let thisSpree = (GM_getValue('conn_day', 0) - GM_getValue('conn_spree_start', 0));
     if (thisSpree < GM_getValue('conn_spree_max') && !isAlert()) {
         setTimeout(() => {
             connectSpree(settings)
@@ -75,7 +75,7 @@ function connectToMatch(settings) {
     const cancel_cls = "artdeco-button__icon";
 
     let texts = GM_getValue('texts', []);
-    let conn_spree = GM_getValue('conn_today', 0);
+    let conn_spree = GM_getValue('conn_day', 0);
 
     const {include_patt, exclude_patt} = generateRegexps(settings);
     const important_patt = /occupation( .* )connect/i;
@@ -109,7 +109,7 @@ function connectToMatch(settings) {
     }
 
     GM_setValue('texts', texts);
-    GM_setValue('conn_today', conn_spree);
+    GM_setValue('conn_day', conn_spree);
 }
 
 /**
@@ -142,12 +142,14 @@ function initDay(settings) {
         GM_setValue('day', Number(getTodayDate()));
     }
 
-    console.log("conn_day", GM_getValue('conn_day'));
-    console.log("conn_day_max", GM_getValue('conn_day_max'));
-    console.log("");
+    console.log("conn_day: ", GM_getValue('conn_day'));
+    console.log("conn_today", GM_getValue('conn_today'));
+    console.log("conn_day_max: ", GM_getValue('conn_day_max'));
+    console.log("==========================================================================");
 }
 
 function saveDay(settings = null) {
+    console.log("saveDay");
     let texts = GM_getValue('texts', []);
 
     if (texts.length > 0) {
