@@ -10,6 +10,7 @@
 // @require          https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/main.js
 // @require          https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/utilities.js
 // @require          https://raw.githubusercontent.com/ronaldluc/AutoLinked/master/src/logic.js
+// @require          deepmerge
 
 // @noframes
 // @grant GM_setValue

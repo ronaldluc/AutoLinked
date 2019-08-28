@@ -118,8 +118,8 @@ function connect() {
             // setTimeout(connectFilteredProfiles, 42 * 60 * 1000);
             // connectFilteredProfiles();
             if (settings !== null) {
-                // dayCycle(Object.assign({}, default_settings, settings));
-                dayCycle(deepmerge(default_settings, settings));
+                dayCycle(Object.assign({}, default_settings, settings));
+                // dayCycle(deepmerge(default_settings, settings));     // neat option, but concatenates arrays
             } else {
                 dayCycle(default_settings);
             }
