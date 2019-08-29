@@ -20,12 +20,12 @@ console.log("Base script loaded");
 
 // Feel free to overwrite `settings` with your own settings by starting from the `default_settings` above
 // Make sure to override whole key:value pairs (the whole values of the "top-level" keys get replaced
-settings_off = {
+settings = {
     // 'click_delay': [2001, 5003],        // [from, to] range of delay between clicks in ms
     // 'lim_per_spree': [30, 36],          // [from, to] range of  max people invited per spree
     // 'spree_delay': [60 * 60 * 1000, 2 * 60 * 60 * 1000],    // [from, to] range of delay between click sprees in ms
     // 'lim_per_day': [250, 300],          // [from, to] range of max people invited per day
-    'includes_patts': {                 // RegExps of peoples bio, to be connected to (keys are for clarity and ignored)
+    'include_patts': {                 // RegExps of peoples bio, to be connected to (keys are for clarity and ignored)
         // "perspective": "python|C\\+\\+",
         "colleagues": "R&D|deep|machine learning| ML | NLP | CV |artificial| AI |data scientist|speech recog|computer vision|language processing", // innovat| BI |intelligence|data  -- too vague
         // "research": "scientist|space", // science|professor|research
@@ -41,3 +41,4 @@ settings_off = {
     //     'old_patt': '\\d+ (week|month|year)',   // RegExp invitations to be withdrawn (proceeds once per day)
     // },
 };
+

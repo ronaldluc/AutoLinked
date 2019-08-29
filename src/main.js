@@ -17,7 +17,7 @@ const default_settings = {
     'lim_per_spree': [30, 36],          // [from, to] range of  max people invited per spree
     'spree_delay': [60 * 60 * 1000, 2 * 60 * 60 * 1000],    // [from, to] range of delay between click sprees in ms
     'lim_per_day': [250, 300],          // [from, to] range of max people invited per day
-    'includes_patts': {                 // RegExps of peoples bio, to be connected to (keys are for clarity and ignored)
+    'include_patts': {                 // RegExps of peoples bio, to be connected to (keys are for clarity and ignored)
         // "perspective": "python|C\\+\\+",
         "colleagues": "R&D|deep|machine learning| ML | NLP | CV |artificial| AI |data scientist|speech recog|computer vision|language processing", // innovat| BI |intelligence|data  -- too vague
         // "research": "scientist|space", // science|professor|research

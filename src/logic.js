@@ -83,10 +83,11 @@ function connectToMatch(settings) {
     let profiles = document.getElementsByClassName(profile_cls);
 
     for (let profile of profiles) {
-        var str = profile.textContent;
+        let important = "";
+        let str = profile.textContent;
         str = str.replace(/([ \n\t,])+/g, " ");
         try {   // try to extract just the jop description
-            str = str.match(important_patt)[1];
+            important = str.match(important_patt)[1];
         } catch (e) {
 
         }
@@ -102,7 +103,7 @@ function connectToMatch(settings) {
             console.log("\tYES");
             connects[0].click();
             ++conn_spree;
-            texts.push([str.toString(), include[0], Date.now().toString(),]);
+            texts.push([important.toString(), include[0], Date.now().toString(),]);
             break;
         }
         window.scrollTo(0, document.body.scrollHeight);  // Load more ppl

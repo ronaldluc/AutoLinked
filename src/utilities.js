@@ -58,7 +58,7 @@ function clickAnimation() {
 
 function generateRegexps(settings) {
     let include_str = "";
-    for (let [key, value] of Object.entries(settings['includes_patts'])) {
+    for (let [key, value] of Object.entries(settings['include_patts'])) {
         include_str += value + "|";
     }
     let exclude_str = "";
