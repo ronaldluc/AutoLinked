@@ -19,8 +19,8 @@ const default_settings = {
     'lim_per_day': [100, 200],          // [from, to] range of max people invited per day
     'include_patts': {                 // RegExps of peoples bio, to be connected to (keys are for clarity and ignored)
         // "perspective": "python|C\\+\\+",
-        "colleagues": "((R&D|deep|machine learning| ML | NLP | CV |artificial| AI |data scientist|speech recog|computer vision|language processing).*( at | @ ))",
-        // innovat| BI |intelligence|data  -- too vague
+        "colleagues": "((R&D|deep|machine learning| ML | NLP | CV |artificial| AI |speech recog|computer vision|language processing).*( at | @ ))",
+        // innovat| BI |intelligence|data|data scientist  -- too vague
         // "research": "scientist|space", // science|professor|research
         // "executive": "founder| C.{1,2}O |lead|owner|principal|partner|investor|angel|entrepreneur", // head of
         "ml_leaders": " at (google|nvidia|deepmind|openai)",
