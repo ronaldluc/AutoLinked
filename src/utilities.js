@@ -55,7 +55,6 @@ function clickAnimation() {
         btn.style.color = 'blue';
     }, 300);
 }
-
 function generateRegexps(settings) {
     let include_str = "";
     for (let [key, value] of Object.entries(settings['include_patts'])) {

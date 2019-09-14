@@ -70,7 +70,7 @@ function connectSpree(settings) {
  */
 function connectToMatch(settings) {
     console.log('ConnectToMatch');
-    const profile_cls = "discover-person-card artdeco-card ember-view";
+    const profile_cls = "discover-entity-type-card artdeco-card ember-view";
     const connect_cls = "artdeco-button artdeco-button--2 artdeco-button--full artdeco-button--secondary";
     const cancel_cls = "artdeco-button__icon";
 
@@ -81,6 +81,8 @@ function connectToMatch(settings) {
     const important_patt = /occupation( .* )connect/i;
 
     let profiles = document.getElementsByClassName(profile_cls);
+    // DEBUG
+    // console.log("Profiles total: ", profile.length);
 
     for (let profile of profiles) {
         let important = "";

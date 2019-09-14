@@ -23,12 +23,12 @@ const default_settings = {
         // innovat| BI |intelligence|data|data scientist  -- too vague
         // "research": "scientist|space", // science|professor|research
         // "executive": "founder| C.{1,2}O |lead|owner|principal|partner|investor|angel|entrepreneur", // head of
-        "ml_leaders": " at (google|nvidia|deepmind|openai)",
+        "ml_leaders": " (at|@) .*(amazon|google (brain|AI)|nvidia|deepmind|openai)", // google
     },
     'exclude_patts': {                  // RegExps of peoples bio, to be always excluded from connecting to (keys are for clarity and ignored)
         "technologies": "electro|web|mobile|java|script|PHP|frontend|front-end|design| QA | UI | UX ",
         "HR": "headhunt|talent|trainer|sourcing|people| HR |recruit",
-        "trainee": "trainee|course|intern|enthusiast",
+        "trainee": "trainee|course|intern|enthusiast|aspiring",
         "other": "ARTIN",
     },
     'pruning': {
