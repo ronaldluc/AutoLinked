@@ -206,7 +206,7 @@ function pruneInvitations(settings, callback = null) {
     let delay = 0;
     for (let task of tasks) {
         gotoElementByText(task[0], delay, task[1]);
-        delay += 1500;
+        delay += 2000;
     }
 
     setTimeout(() => {
@@ -227,7 +227,7 @@ function pruneOld(settings) {
 
     let inv_cards = document.getElementsByClassName(inv_card_cls);
     for (let card of inv_cards) {
-        const old_patt = new RegExp(settings['prune']['old_patt'], 'i');
+        const old_patt = new RegExp(settings['pruning']['old_patt'], 'i');
         let time = card.getElementsByClassName(time_cls)[0].innerHTML;
         const res = time.match(old_patt);
         console.log(res);
