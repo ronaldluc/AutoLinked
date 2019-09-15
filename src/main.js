@@ -82,7 +82,7 @@ function createResetBtn() {
 
 function createPruneBtn() {
     createButton('Prune!', 'pruneBtn', () => {
-        pruneInvitations()
+        pruneInvitations(Object.assign({}, default_settings, settings))
     }, 16);
 }
 

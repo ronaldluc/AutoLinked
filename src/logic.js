@@ -223,7 +223,7 @@ function pruneOld(settings) {
     const inv_card_cls = "invitation-card--selectable";
     const time_cls = "time-ago";
 
-    const withdraw_cls = "invitation-card__action-btn artdeco-button";
+    const withdraw_cls = "invitation-card__action-btn";
 
     let inv_cards = document.getElementsByClassName(inv_card_cls);
     for (let card of inv_cards) {
