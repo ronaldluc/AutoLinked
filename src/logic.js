@@ -70,7 +70,8 @@ function connectSpree(settings) {
  */
 function connectToMatch(settings) {
     console.log('ConnectToMatch');
-    const profile_cls = "discover-entity-type-card artdeco-card ember-view";
+    // const profile_cls = "discover-entity-type-card artdeco-card ember-view";
+    const profile_cls = "discover-entity-type-card";
     const connect_cls = "artdeco-button artdeco-button--2 artdeco-button--full artdeco-button--secondary";
     const cancel_cls = "artdeco-button__icon";
 
