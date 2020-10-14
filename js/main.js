@@ -62,8 +62,6 @@ function main() {
         createResetBtn();
         createPruneBtn();
 
-        createTestBtn();
-
         createPopup();
     }
 }
@@ -86,15 +84,6 @@ function createPruneBtn() {
     createButton('Prune!', 'pruneBtn', () => {
         pruneInvitations(Object.assign({}, default_settings, settings))
     }, 16);
-}
-
-function createTestBtn() {
-    createButton('TEST!', 'testBtn', myButton, 20);
-}
-
-function myButton() {
-    console.log('TEST Button...');
-    console.log('Custom message', settings.custom_message);
 }
 
 function createPopup() {
