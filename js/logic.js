@@ -254,7 +254,7 @@ function pruneOld(settings) {
         }
     }
 }
-
+/*
 function customMsg(name, company, research, social_connection, settings) {
     console.log('Settings: ', settings);
     if (name == null) {
@@ -308,7 +308,7 @@ function customMsg(name, company, research, social_connection, settings) {
     return send +
         "\n" +
         "Thanks, " + settings.custom_message.sender_name;
-}
+}*/
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END OF REFACTORED CODE
@@ -366,7 +366,7 @@ function iterJobs(texts = [], counter = 0, settings) {
                 if (add_note.textContent.includes("Add a note")) {
                     add_note.click();
                     let custom_msg = document.getElementById(custom_id);
-                    custom_msg.value = customMsg(name, company, research, social_connection, settings);
+                    custom_msg.value = settings.customMsg(name, company, research, social_connection);
                     console.log("Send:\n" + custom_msg.value);
                     texts.push([str, custom_msg.value]);
                     counter++;
@@ -379,6 +379,8 @@ function iterJobs(texts = [], counter = 0, settings) {
                     send_inv.click();
                 }
             }
+        } else {
+            continue;
         }
     }
     const next_cls = "artdeco-pagination__button artdeco-pagination__button--next artdeco-button artdeco-button--muted artdeco-button--icon-right artdeco-button--1 artdeco-button--tertiary ember-view"

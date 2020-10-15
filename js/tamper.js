@@ -41,17 +41,58 @@ settings = {
     //     'old_patt': '\\d+ (week|month|year)',   // RegExp invitations to be withdrawn (proceeds once per day)
     // },
 
-    // Custom message ------------------------------------------------------------------------------------------
-    'custom_message': {
-       'sender_name': 'Peter',
-       'salutation': 'Hi',
-       'message_text': {
-         'social_connection': "it's nice to connect to other IT experts.",
-         'research': "it's nice to connect to other IT experts and as I was scrolling through LinkedIn, I saw you do some research in this field.\nCould you please tell me more about your research?",
-         'no_company_name': "it's nice to connect to other IT experts and I saw you are already connected to ", // Name of socal connection will be added programmatically!
-         'company_name': "I was scrolling through LinkedIn and saw you are already connected to ", // Name of socal connection will be added programmatically!
-         'company_question_variant_a': "It's nice to connect to other IT experts + I would like to ask you, what is Cloud Computing like at ", // Name of company and question mark will be added programmatically!
-         'company_question_variant_b': "It's nice to connect to other IT experts + Could you please tell me more about IT at "
-       }
-    },
+    // Hard Workflow Custom message ------------------------------------------------------------------------------------------
+    customMsg: function(name, company, research, social_connection) {
+        if (name == null) {
+            return "Hi.";
+        }
+        name = capitalize(name[1]);
+        if (research !== null && research.length > 0) {
+            return "Hi " + name + ",\n" +
+                "\n" +
+                "it's nice to connect to other IT experts and as I was scrolling through LinkedIn, I saw you do some research in this field. \n" +
+                "Could you please tell me more about your research?\n" +
+                "\n" +
+                "Thanks, Peter";
+        }
+        if (social_connection == null) {
+            return "Hi " + name + ",\n" +
+                "\n" +
+                "it's nice to connect to other IT experts.\n" +
+                "\n" +
+                "Peter";
+        }
+        social_connection = capitalize(social_connection[1]);
+        var company_name = "";
+        if (company != null) {
+            company_name = capitalize(company[1]);
+        }
+        var exclude_patt = /free|self|deutch|austri|ww/i;
+        var exclude = company_name.match(exclude_patt);
+        console.log("Company name: " + company_name + " length " + company_name.length);
+    
+        // Engineer No company name
+        if (exclude !== null || company_name.length < 3) {
+            return "Hi " + name + ",\n" +
+                "\n" +
+                "it's nice to connect to other IT experts and I saw you are connected to " + social_connection + " already.\n" +
+                "\n" +
+                "Best, Peter";
+        }
+    
+        // Engineer with company name
+        var send = "Hi " + name + ",\n" +
+            "\n" +
+            "I was scrolling through LinkedIn and saw you are connected to " + social_connection + " already.\n";
+        if (Math.random() >= 0.5) {
+            // "Could you please tell me, what is ML like at " + company_name + "?\n" +
+            send += "It's nice to connect to other IT experts + I would like to ask you, what is IT infrastructure like at " + company_name + ".\n";
+        } else {
+            send += "It's nice to connect to other IT experts + Could you please tell me more about IT at " + company_name + "?\n";
+        }
+        return send +
+            "\n" +
+            "Thanks, Peter";
+    
+    }
 };
