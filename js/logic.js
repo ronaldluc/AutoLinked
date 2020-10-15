@@ -48,6 +48,7 @@ function dayCycle(settings, mode) {
             dayCycle(settings)
         }, getRandomInt(settings['spree_delay']));
     } else {
+        console.log('Save day.');
         saveDay(settings);
     }
 }
@@ -79,7 +80,7 @@ function connectSpree(settings) {
 function connectToMatch(settings) {
     console.log('ConnectToMatch');
     const profile_cls = "discover-entity-type-card";
-    const connect_cls = "artdeco-button artdeco-button--2 artdeco-button--full artdeco-button--secondary";
+    const connect_cls = "artdeco-button artdeco-button--2 artdeco-button--full artdeco-button--secondary ember-view";
     // const cancel_cls = "artdeco-button__icon";
 
     let texts = GM_getValue('texts', []);
@@ -114,11 +115,16 @@ function connectToMatch(settings) {
             if (connects[0].innerText === 'Connect') {
                 console.log('Click Button: ', connects[0].innerText);
                 connects[0].click();
+            } else {
+                // Skip 'Pending' buttons
+                continue;
             }
+            console.log('Conn_Spree: ', conn_spree);
             ++conn_spree;
             texts.push([important.toString(), include[0], Date.now().toString(),]);
-            continue;
+            break;
         }
+
         window.scrollTo(0, document.body.scrollHeight);  // Load more ppl
     }
 
