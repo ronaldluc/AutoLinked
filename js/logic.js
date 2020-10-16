@@ -45,7 +45,7 @@ function dayCycle(settings, mode) {
 
     if (GM_getValue('conn_day', 0) < GM_getValue('conn_day_max', 9999)) {
         setTimeout(() => {
-            dayCycle(settings)
+            dayCycle(settings, mode)
         }, getRandomInt(settings['spree_delay']));
     } else {
         console.log('Save day.');
