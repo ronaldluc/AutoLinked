@@ -7,9 +7,9 @@
 // @include          https://www.linkedin.com/*
 // @version          2.0
 // @match            https://www.linkedin.com/*
-// @require          http://localhost:5500/js/main.js
-// @require          http://localhost:5500/js/utilities.js
-// @require          http://localhost:5500/js/logic.js
+// @require          https://raw.githubusercontent.com/ronaldluc/AutoLinked/development/js/main.js
+// @require          https://raw.githubusercontent.com/ronaldluc/AutoLinked/development/js/utilities.js
+// @require          https://raw.githubusercontent.com/ronaldluc/AutoLinked/development/js/logic.js
 
 // @noframes
 // @grant GM_setValue
