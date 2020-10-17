@@ -254,67 +254,153 @@ function pruneOld(settings) {
         }
     }
 }
-/*
-function customMsg(name, company, research, social_connection, settings) {
-    console.log('Settings: ', settings);
-    if (name == null) {
-        return settings.custom_message.salutation + ".";
-    }
-    name = capitalize(name[1]);
-    if (research !== null && research.length > 0) {
-        return settings.custom_message.salutation + " " + name + ",\n" +
-            "\n" +
-            settings.custom_message.message_text.research +
-            "\n\n" +
-            "Thanks, " + settings.custom_message.sender_name;
-    }
-    if (social_connection == null) {
-        return settings.custom_message.salutation + " " + name + ",\n" +
-            "\n" +
-            settings.custom_message.message_text.social_connection + "\n" +
-            "\n" +
-            settings.custom_message.sender_name;
-    }
-    social_connection = capitalize(social_connection[1]);
-
-    var company_name = "";
-    if (company != null) {
-        company_name = capitalize(company[1]);
-    }
-
-    var exclude_patt = /free|self|deutch|austri|ww/i;
-    var exclude = company_name.match(exclude_patt);
-    console.log("Company name: " + company_name + " length " + company_name.length);
-
-    // Engineer No company name
-    if (exclude !== null || company_name.length < 3) {
-        return settings.custom_message.salutation + " " + name + ",\n" +
-            "\n" +
-            settings.custom_message.message_text.no_company_name + social_connection + ".\n" +
-            "\n" +
-            "Best, " + settings.custom_message.sender_name;
-    }
-
-    // Engineer with company name
-    var send = settings.custom_message.salutation + " " + name + ",\n" +
-        "\n" +
-        settings.custom_message.message_text.company_name  + social_connection + ".\n";
-
-    if (Math.random() >= 0.5) {
-        send += settings.custom_message.message_text.company_question_variant_a + company_name + "?\n";
-    } else {
-        send += settings.custom_message.message_text.company_question_variant_b + company_name + "?\n";
-    }
-    return send +
-        "\n" +
-        "Thanks, " + settings.custom_message.sender_name;
-}*/
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END OF REFACTORED CODE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function iterJobs(texts = [], counter = 0, settings) {
+    console.log('HardSpree');
+    connectToNextHard(settings);
+
+    let thisSpree = (GM_getValue('conn_day', 0) - GM_getValue('conn_spree_start', 0));
+    if (thisSpree < GM_getValue('conn_spree_max') && !isAlert()) {
+        setTimeout(() => {
+            iterJobs(settings)
+        }, getRandomInt(settings['click_delay']));
+    }
+}
+
+function connectToNextHard(settings) {
+    console.log('connectToNextHard');
+    var btn_cls = "search-result__wrapper";
+    var social_cls = "search-result__social-proof ember-view";
+    var profiles = document.getElementsByClassName(btn_cls);
+
+    for (let profile of profiles) {
+        // console.log(profile.textContent);
+        var str = profile.textContent;
+        var social_str = "";
+        try {
+            social_str = profile.getElementsByClassName(social_cls)[0].textContent.replace(/( |\n|\t)+/g, " ");
+        } catch (err) {
+
+        }
+
+        const connect_cls = "search-result__action-button search-result__actions--primary artdeco-button artdeco-button--default artdeco-button--2 artdeco-button--secondary";
+        const connect_btns = profile.getElementsByClassName(connect_cls);
+        const random_text_cls = "t-14 t-black pb1";
+        const requires_email_id = "email";
+
+        str = str.replace(/( |\n|\t)+/g, " ");
+        // var patt = /machine[a-z ]*learning.*at/i;
+        console.log(str);
+        const body_patt = /2nd.*machine/i;
+        const name_patt = /([^,.\- ]+) [^,.\- ]+(,.+)? 2nd degree connection 2nd/i;
+        const company_patt = /machine[a-z ]*learning .* at (\w+)/i;
+        const research_patt = /research/i;
+        const social_patt = /([^,.\- ]+ [^,.\- ]+)/i;
+
+        const body_text = str.match(body_patt);
+        const name = str.match(name_patt);
+        const company = str.match(company_patt);
+        const research = str.match(research_patt);
+        const social_connection = social_str.match(social_patt);
+        let custom_msg = settings.customMsg(name, company, research, social_connection);
+
+        if (connect_btns.length < 1) {
+            continue;
+        }
+        let connect_btn = connect_btns[0];
+
+        if (connect_btn.textContent.includes("Connect")) {
+            connect_btn.click();
+            let requires_email = !!document.getElementById(requires_email_id);
+            if (requires_email) {
+                const cancel_inv_cls = "artdeco-modal__dismiss";
+                let cancel_invs = document.getElementsByClassName(cancel_inv_cls);
+                for (let cancel_inv of cancel_invs) {
+                    console.log('Close!');
+                    cancel_inv.click();
+                }
+            } else {
+                setTimeout(() => {
+                    performHardInvitation(settings, custom_msg)
+                }, getRandomInt([500, 600]));
+                return;
+            }
+        }
+    }
+    const next_cls = "artdeco-pagination__button artdeco-pagination__button--next artdeco-button artdeco-button--muted artdeco-button--icon-right artdeco-button--1 artdeco-button--tertiary ember-view"
+    let next = document.getElementsByClassName(next_cls);
+
+    console.log("Going to the next page!");
+    if (next[0] !== undefined) {
+        next[0].click();
+        setTimeout(() => {
+            connectToNextHard(settings)
+        }, 4200);
+    } else {
+        console.log('No more connections.');
+    }
+}
+
+function performHardInvitation(settings, custom_msg) {
+    console.log('performHardInvitation');
+    const add_note_cls = "artdeco-button artdeco-button--secondary artdeco-button--3 mr1";
+    let add_notes = document.getElementsByClassName(add_note_cls);
+    for (let add_note of add_notes) {
+        if (add_note.textContent.includes("Add a note")) {
+            add_note.click();
+            setTimeout(() => {
+                writeMsg(settings, custom_msg)
+            }, getRandomInt([500, 600]));
+            return;
+        }
+    }
+}
+
+
+function writeMsg(settings, custom_msg) {
+    console.log('writeMsg');
+    const custom_id = "custom-message";
+    const cancel_inv_cls = "artdeco-button artdeco-button--muted artdeco-button--3 artdeco-button--tertiary";
+    let custom_msg_textarea = document.getElementById(custom_id);
+    custom_msg_textarea.value = custom_msg;
+    let cancel_invs = document.getElementsByClassName(cancel_inv_cls);
+    console.log(cancel_invs);
+    for (let cancel_inv of cancel_invs) {
+        console.log('Found Cancel!');
+        if (cancel_inv.textContent.includes("Cancel")) {
+            console.log('Focused Cancel!');
+            cancel_inv.focus();
+        }
+    }
+    console.log("Send:\n" + custom_msg_textarea.value);
+    setTimeout(() => {
+        sendMsg(settings)
+    }, getRandomInt([500, 600]));
+}
+
+function sendMsg(settings) {
+    console.log('sendMsg');
+    const send_inv_cls = "artdeco-button artdeco-button--3 ml1";
+    let send_invs = document.getElementsByClassName(send_inv_cls);
+    for (let send_inv of send_invs) {
+        if (send_inv.textContent.includes("Done") || send_inv.textContent.includes("Send")) {
+            console.log('Done!');
+            send_inv.click();
+        }
+    }
+    const cancel_inv_cls = "artdeco-modal__dismiss";
+    let cancel_invs = document.getElementsByClassName(cancel_inv_cls);
+    for (let cancel_inv of cancel_invs) {
+        console.log('Close!');
+        cancel_inv.click();
+    }
+}
+
+function iterJobs_old(texts = [], counter = 0, settings) {
     // var btn_cls = "search-result__info pt3 pb4 ph0";
     var btn_cls = "search-result__wrapper";
     var social_cls = "search-result__social-proof ember-view";
